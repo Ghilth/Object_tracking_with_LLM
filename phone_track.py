@@ -1,7 +1,6 @@
 import cv2
 from ultralytics import YOLO,solutions 
 import numpy as np
-import imutils 
 import requests
 import cv2
 from ultralytics import YOLO,solutions 

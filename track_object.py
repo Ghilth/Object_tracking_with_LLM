@@ -12,8 +12,8 @@ def track_specific_object_stream(model, object_name, stream_url):
     """
 
     # Ouvrir le flux vidéo depuis l'URL
-    #cap = cv2.VideoCapture(stream_url,cv2.CAP_FFMPEG)
-    cap = cv2.VideoCapture(0)
+    cap = cv2.VideoCapture(stream_url,cv2.CAP_FFMPEG)
+    #cap = cv2.VideoCapture(0)
 
 
     if not cap.isOpened():
@@ -65,10 +65,11 @@ def track_specific_object_stream(model, object_name, stream_url):
 
 
 # Charger le modèle YOLO
-model = YOLO("yolo11n.pt")
+#model = YOLO("yolo11n.pt")
+model = YOLO("yolov8n.pt")
 
 # URL du flux vidéo (par exemple, RTSP ou HTTP)
-stream_url = "http://192.168.218.129:8080"  # Remplacez par l'URL de votre flux vidéo
+stream_url = "http://192.168.218.129:8080/video"  # Remplacez par l'URL de votre flux vidéo
 
 # Traquer un objet spécifique, par exemple "person"
-track_specific_object_stream(model, 'person', stream_url)
+track_specific_object_stream(model, 'laptop', stream_url)
