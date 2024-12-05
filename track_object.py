@@ -2,26 +2,29 @@ import cv2
 from ultralytics import YOLO
 
 
-model = YOLO("yolo11n.pt")
-
-
-
-def track_specific_object_webcam(model, object_name):
+def track_specific_object_stream(model, object_name, stream_url):
     """
-    Traque uniquement un objet spécifique à l'aide d'un modèle YOLO en utilisant la webcam.
+    Traque uniquement un objet spécifique à l'aide d'un modèle YOLO en utilisant un flux vidéo via URL.
 
     :param model: Le modèle YOLO chargé.
     :param object_name: Nom de l'objet à traquer (comme "person", "car", etc.).
+    :param stream_url: URL du flux vidéo (RTSP, HTTP, etc.).
     """
 
-    # Ouvrir la webcam
+    # Ouvrir le flux vidéo depuis l'URL
+    #cap = cv2.VideoCapture(stream_url,cv2.CAP_FFMPEG)
     cap = cv2.VideoCapture(0)
 
+
     if not cap.isOpened():
-        print("Erreur : Impossible d'accéder à la webcam.")
+        print("Connexion lente, nouvel essai...")
+        import time
+        time.sleep(10)  # Attendre 5 secondes
+        cap.open(stream_url) 
+        #print("Erreur : Impossible d'accéder au flux vidéo.")
         return
 
-    print(f"Tracking de l'objet '{object_name}' via la webcam. Appuyez sur 'q' pour quitter.")
+    print(f"Tracking de l'objet '{object_name}' depuis le flux vidéo. Appuyez sur 'q' pour quitter.")
 
     while cap.isOpened():
         success, frame = cap.read()
@@ -50,7 +53,7 @@ def track_specific_object_webcam(model, object_name):
                                 cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
 
         # Afficher la trame annotée
-        cv2.imshow("YOLO Object Tracking - Webcam", frame)
+        cv2.imshow("YOLO Object Tracking - Stream", frame)
 
         # Quitter avec 'q'
         if cv2.waitKey(1) & 0xFF == ord("q"):
@@ -61,5 +64,11 @@ def track_specific_object_webcam(model, object_name):
     cv2.destroyAllWindows()
 
 
-#track_specific_object_webcam(model, 'person')
+# Charger le modèle YOLO
+model = YOLO("yolo11n.pt")
 
+# URL du flux vidéo (par exemple, RTSP ou HTTP)
+stream_url = "http://192.168.218.129:8080"  # Remplacez par l'URL de votre flux vidéo
+
+# Traquer un objet spécifique, par exemple "person"
+track_specific_object_stream(model, 'person', stream_url)
