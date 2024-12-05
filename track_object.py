@@ -72,4 +72,4 @@ model = YOLO("yolov8n.pt")
 stream_url = "http://192.168.218.129:8080/video"  # Remplacez par l'URL de votre flux vidéo
 
 # Traquer un objet spécifique, par exemple "person"
-track_specific_object_stream(model, 'laptop', stream_url)
+track_specific_object_stream(model, 'chair', stream_url)
