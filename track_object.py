@@ -64,7 +64,7 @@ def track_specific_object_stream(object_name, stream_url="http://192.168.218.129
         cv2.imshow("YOLO Object Tracking - Stream", frame)
 
         # Quitter avec 'q'
-        if cv2.waitKey(1) & 0xFF == ord("q") or (time.time() -start_time > 1000):
+        if cv2.waitKey(1) & 0xFF == ord("q") or (time.time() -start_time > 10):
             break
 
     # Libérer les ressources
@@ -73,4 +73,4 @@ def track_specific_object_stream(object_name, stream_url="http://192.168.218.129
 
 
 # Traquer un objet spécifique, par exemple "person"
-track_specific_object_stream("person")
+#track_specific_object_stream("laptop")
