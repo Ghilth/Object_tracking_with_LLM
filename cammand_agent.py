@@ -4,12 +4,17 @@ from typing import Type, TypedDict,Annotated
 from langgraph.graph import StateGraph, END
 from langchain_core.messages import AnyMessage, SystemMessage,HumanMessage,ToolMessage 
 import operator
+from langchain_google_genai import ChatGoogleGenerativeAI
+import os
 from track_object import track_specific_object_stream
 
 
+#load key
+key = os.getenv("GOOGLE_API_KEY")
 
 
 
+#Let's define our Agent
 class AgentState(TypedDict):
   messages: Annotated[list[AnyMessage],operator.add]
 
@@ -30,13 +35,7 @@ class CustomTrackTool(BaseTool):
 
 tool=CustomTrackTool()
 
-def find_object():
-  return "Object Tracked around Manhattan at 7 a.m !!!"
 
-def describe_video():
-  return "Frames Analyzed!!!"
-
-tools={"find_object_fn":find_object,"describe_video_fn":describe_video}
 class Agent:
   def __init__(self,model,tools,system=""):
     self.system=system 
@@ -78,3 +77,21 @@ class Agent:
       results.append(ToolMessage(tool_call_id=t['id'],name=t['name'],content=str(result)))
       print("Back to the model!")
       return {"messages":results}
+    
+
+
+#Prompt
+
+prompt="""You are smart tracking assistant.Use the track tool to loop up information.\
+You are allowed to make multiple calls (either together or in sequence).\
+Only look up information when you are sure of what you want.\
+If you need to look up some information before asking a follow up question,you are allowed to do that!
+"""
+model=ChatGoogleGenerativeAI(model="gemini-1.5-pro-latest",google_api_key=key)
+TrackMindBot=Agent(model,[tool],system=prompt)
+
+
+
+
+messages =[HumanMessage(content="Find me chair object of  frames")]
+result=TrackMindBot.graph.invoke({"messages":messages})
