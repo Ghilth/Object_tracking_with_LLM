@@ -3,7 +3,7 @@ from ultralytics import YOLO
 import time
 
 
-def track_specific_object_stream(object_name, stream_url="http://192.168.218.129:8080/video" ,model=YOLO("yolov8n.pt")):
+def track_specific_object_stream(object_name, stream_url="http://192.168.159.186:8080/video" ,model=YOLO("yolov8n.pt")):
     
     
     """
@@ -64,7 +64,7 @@ def track_specific_object_stream(object_name, stream_url="http://192.168.218.129
         cv2.imshow("YOLO Object Tracking - Stream", frame)
 
         # Quitter avec 'q'
-        if cv2.waitKey(1) & 0xFF == ord("q") or (time.time() -start_time > 10):
+        if cv2.waitKey(1) & 0xFF == ord("q") or (time.time() -start_time > 1000):
             break
 
     # Libérer les ressources

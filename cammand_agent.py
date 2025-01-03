@@ -117,5 +117,5 @@ TrackMindBot=Agent(model,[tool],system=prompt)
 
 
 
-messages =[HumanMessage(content="Find me chair object on  frames")]
+messages =[HumanMessage(content="Find me person object on  frames")]
 result=TrackMindBot.graph.invoke({"messages":messages})
